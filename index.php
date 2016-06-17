@@ -6,6 +6,6 @@
  * and open the template in the editor.
  */
 
-echo 'testですよ';
+echo 'testですよ７';
 
 
