@@ -3,10 +3,10 @@
  * Fuel is a fast, lightweight, community driven PHP5 framework.
  *
  * @package    Fuel
- * @version    1.8
+ * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2016 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -41,23 +41,24 @@ defined('FUEL_START_TIME') or define('FUEL_START_TIME', microtime(true));
 defined('FUEL_START_MEM') or define('FUEL_START_MEM', memory_get_usage());
 
 // Load in the Fuel autoloader
-if ( ! file_exists(COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php'))
-{
-	die('No composer autoloader found. Please run composer to install the FuelPHP framework dependencies first!');
-}
-
-// Activate the framework class autoloader
 require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
 class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
 
-// Exception route processing closure
-$routerequest = function($request = null, $e = false)
+// Boot the app
+require APPPATH.'bootstrap.php';
+
+// Generate the request, execute it and send the output.
+try
 {
-	Request::reset_request(true);
+	$response = Request::forge()->execute()->response();
+}
+catch (HttpNotFoundException $e)
+{
+	\Request::reset_request(true);
 
-	$route = array_key_exists($request, Router::$routes) ? Router::$routes[$request]->translation : Config::get('routes.'.$request);
+	$route = array_key_exists('_404_', Router::$routes) ? Router::$routes['_404_']->translation : Config::get('routes._404_');
 
-	if ($route instanceof Closure)
+	if($route instanceof Closure)
 	{
 		$response = $route();
 
@@ -66,55 +67,21 @@ $routerequest = function($request = null, $e = false)
 			$response = Response::forge($response);
 		}
 	}
-	elseif ($e === false)
-	{
-		$response = Request::forge()->execute()->response();
-	}
 	elseif ($route)
 	{
-		$response = Request::forge($route, false)->execute(array($e))->response();
-	}
-	elseif ($request)
-	{
-		$response = Request::forge($request)->execute(array($e))->response();
+		$response = Request::forge($route, false)->execute()->response();
 	}
 	else
 	{
 		throw $e;
 	}
+}
 
-	return $response;
-};
-
-// Generate the request, execute it and send the output.
-try
-{
-	// Boot the app...
-	require APPPATH.'bootstrap.php';
-
-	// ... and execute the main request
-	$response = $routerequest();
-}
-catch (HttpBadRequestException $e)
-{
-	$response = $routerequest('_400_', $e);
-}
-catch (HttpNoAccessException $e)
-{
-	$response = $routerequest('_403_', $e);
-}
-catch (HttpNotFoundException $e)
-{
-	$response = $routerequest('_404_', $e);
-}
-catch (HttpServerErrorException $e)
-{
-	$response = $routerequest('_500_', $e);
-}
+// Render the output
+$response->body((string) $response);
 
 // This will add the execution time and memory usage to the output.
 // Comment this out if you don't use it.
-$response->body((string) $response);
 if (strpos($response->body(), '{exec_time}') !== false or strpos($response->body(), '{mem_usage}') !== false)
 {
 	$bm = Profiler::app_total();
@@ -127,5 +94,4 @@ if (strpos($response->body(), '{exec_time}') !== false or strpos($response->body
 	);
 }
 
-// Send the output to the client
 $response->send(true);

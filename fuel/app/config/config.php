@@ -1,12 +1,12 @@
 <?php
 /**
- * Part of the Fuel framework.
+ * Fuel is a fast, lightweight, community driven PHP5 framework.
  *
  * @package    Fuel
- * @version    1.8
+ * @version    1.0
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2016 Fuel Development Team
+ * @copyright  2010 - 2011 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -23,7 +23,7 @@ return array(
 	 *
 	 * Set this to null to have it automatically detected.
 	 */
-	// 'base_url'  => null,
+	'base_url'  => null,
 
 	/**
 	 * url_suffix - Any suffix that needs to be added to
@@ -34,57 +34,46 @@ return array(
 	 *
 	 * Set this to an empty string if no suffix is used
 	 */
-	// 'url_suffix'  => '',
+	'url_suffix'  => '',
 
 	/**
 	 * index_file - The name of the main bootstrap file.
 	 *
-	 * Set this to 'index.php if you don't use URL rewriting
+	 * Set this to false or remove if you using mod_rewrite.
 	 */
-	// 'index_file' => false,
+	'index_file'  => 'index.php',
 
-	// 'profiling'  => false,
+	'profiling'  => false,
 
 	/**
-	 * Default location for the file cache
+	 * Settings for Cache class
 	 */
-	// 'cache_dir'       => APPPATH.'cache/',
+	'caching'         => false,
+	'cache_dir'       => APPPATH.'cache/',
+	'cache_lifetime'  => 3600, // In Seconds
 
 	/**
-	 * Settings for the file finder cache (the Cache class has it's own config!)
+	 * Callback to use with ob_start(), set this to 'ob_gzhandler' for gzip encodign of output
 	 */
-	// 'caching'         => false,
-	// 'cache_lifetime'  => 3600, // In Seconds
+	'ob_callback'  => null,
 
-	/**
-	 * Callback to use with ob_start(), set this to 'ob_gzhandler' for gzip encoding of output
-	 */
-	// 'ob_callback'  => null,
-
-	// 'errors'  => array(
-		// Which errors should we show, but continue execution? You can add the following:
-		// E_NOTICE, E_WARNING, E_DEPRECATED, E_STRICT to mimic PHP's default behaviour
-		// (which is to continue on non-fatal errors). We consider this bad practice.
-		// 'continue_on'  => array(),
+	'errors'  => array(
+		// Which errors should we show, but continue execution?
+		'continue_on'  => array(E_NOTICE, E_WARNING, E_DEPRECATED, E_STRICT),
 		// How many errors should we show before we stop showing them? (prevents out-of-memory errors)
-		// 'throttle'     => 10,
+		'throttle'     => 10,
 		// Should notices from Error::notice() be shown?
-		// 'notices'      => true,
-		// Render previous contents or show it as HTML?
-		// 'render_prior' => false,
-	// ),
+		'notices'      => true,
+	),
 
 	/**
 	 * Localization & internationalization settings
 	 */
-	// 'language'           => 'en', // Default language
-	// 'language_fallback'  => 'en', // Fallback language when file isn't available for default language
-	// 'locale'             => 'en_US', // PHP set_locale() setting, null to not set
+	'language'           => 'ja', //'en', // Default language
+	'language_fallback'  => 'en', // Fallback language when file isn't available for default language
+	'locale'             => 'ja_JP', //'en_US', // PHP set_locale() setting, null to not set
 
-	/**
-	 * Internal string encoding charset
-	 */
-	// 'encoding'  => 'UTF-8',
+	'encoding'  => 'UTF-8',
 
 	/**
 	 * DateTime settings
@@ -92,8 +81,8 @@ return array(
 	 * server_gmt_offset	in seconds the server offset from gmt timestamp when time() is used
 	 * default_timezone		optional, if you want to change the server's default timezone
 	 */
-	// 'server_gmt_offset'  => 0,
-	// 'default_timezone'   => null,
+	'server_gmt_offset'  =>  3600 * 9, //0,
+	'default_timezone'   => 'Asia/Tokyo', //'UTC',
 
 	/**
 	 * Logging Threshold.  Can be set to any of the following:
@@ -105,131 +94,67 @@ return array(
 	 * Fuel::L_INFO
 	 * Fuel::L_ALL
 	 */
-	// 'log_threshold'    => Fuel::L_WARNING,
-	// 'log_path'         => APPPATH.'logs/',
-	// 'log_date_format'  => 'Y-m-d H:i:s',
+	'log_threshold'    => Fuel::L_WARNING,
+	'log_path'         => APPPATH.'logs/',
+	'log_date_format'  => 'Y-m-d H:i:s',
 
 	/**
 	 * Security settings
 	 */
 	'security' => array(
-		// 'csrf_autoload'            => false,
-		// 'csrf_autoload_methods'    => array('post', 'put', 'delete'),
-		// 'csrf_bad_request_on_fail' => false,
-		// 'csrf_auto_token'          => false,
-		// 'csrf_token_key'           => 'fuel_csrf_token',
-		// 'csrf_expiration'          => 0,
-
-		/**
-		 * A salt to make sure the generated security tokens are not predictable
-		 */
-		// 'token_salt'            => 'put your salt value here to make the token more secure',
-
-		/**
-		 * Allow the Input class to use X headers when present
-		 *
-		 * Examples of these are HTTP_X_FORWARDED_FOR and HTTP_X_FORWARDED_PROTO, which
-		 * can be faked which could have security implications
-		 */
-		// 'allow_x_headers'       => false,
-
-		/**
-		 * This input filter can be any normal PHP function as well as 'xss_clean'
-		 *
-		 * WARNING: Using xss_clean will cause a performance hit.
-		 * How much is dependant on how much input data there is.
-		 */
+		'csrf_autoload'    => false,
+		'csrf_token_key'   => 'fuel_csrf_token',
+		'csrf_expiration'  => 0,
 		'uri_filter'       => array('htmlentities'),
 
 		/**
 		 * This input filter can be any normal PHP function as well as 'xss_clean'
 		 *
-		 * WARNING: Using xss_clean will cause a performance hit.
-		 * How much is dependant on how much input data there is.
+		 * WARNING: Using xss_clean will cause a performance hit.  How much is
+		 * dependant on how much input data there is.
 		 */
-		// 'input_filter'  => array(),
+		'input_filter'  => array(),
 
 		/**
 		 * This output filter can be any normal PHP function as well as 'xss_clean'
 		 *
-		 * WARNING: Using xss_clean will cause a performance hit.
-		 * How much is dependant on how much input data there is.
+		 * WARNING: Using xss_clean will cause a performance hit.  How much is
+		 * dependant on how much input data there is.
 		 */
 		'output_filter'  => array('Security::htmlentities'),
 
 		/**
-		 * Encoding mechanism to use on htmlentities()
-		 */
-		// 'htmlentities_flags' => ENT_QUOTES,
-
-		/**
-		 * Whether to encode HTML entities as well
-		 */
-		// 'htmlentities_double_encode' => false,
-
-		/**
 		 * Whether to automatically filter view data
 		 */
-		// 'auto_filter_output'  => true,
+		'auto_filter_output'  => true,
 
 		/**
 		 * With output encoding switched on all objects passed will be converted to strings or
 		 * throw exceptions unless they are instances of the classes in this array.
 		 */
 		'whitelisted_classes' => array(
-			'Fuel\\Core\\Presenter',
 			'Fuel\\Core\\Response',
 			'Fuel\\Core\\View',
 			'Fuel\\Core\\ViewModel',
 			'Closure',
-		),
+		)
 	),
 
 	/**
 	 * Cookie settings
 	 */
-	// 'cookie' => array(
+	'cookie' => array(
 		// Number of seconds before the cookie expires
-		// 'expiration'  => 0,
+		'expiration'  => 0,
 		// Restrict the path that the cookie is available to
-		// 'path'        => '/',
+		'path'        => '/',
 		// Restrict the domain that the cookie is available to
-		// 'domain'      => null,
+		'domain'      => null,
 		// Only transmit cookies over secure connections
-		// 'secure'      => false,
+		'secure'      => false,
 		// Only transmit cookies over HTTP, disabling Javascript access
-		// 'http_only'   => false,
-	// ),
-
-	/**
-	 * Validation settings
-	 */
-	// 'validation' => array(
-		/**
-		 * Whether to fallback to global when a value is not found in the input array.
-		 */
-		// 'global_input_fallback' => true,
-	// ),
-
-	/**
-	 * Controller class prefix
-	 */
-	 // 'controller_prefix' => 'Controller_',
-
-	/**
-	 * Routing settings
-	 */
-	// 'routing' => array(
-		/**
-		 * Whether URI routing is case sensitive or not
-		 */
-		// 'case_sensitive' => true,
-
-		/**
-		 *  Whether to strip the extension
-		 */
-		// 'strip_extension' => true,
-	// ),
+		'http_only'   => false,
+	),
 
 	/**
 	 * To enable you to split up your application into modules which can be
@@ -237,33 +162,20 @@ return array(
 	 * here. By default empty, but to use them you can add something
 	 * like this:
 	 *      array(APPPATH.'modules'.DS)
-	 *
-	 * Paths MUST end with a directory separator (the DS constant)!
 	 */
-	// 'module_paths' => array(
-	// 	//APPPATH.'modules'.DS
-	// ),
-
-	/**
-	 * To enable you to split up your additions to the framework, packages are
-	 * used. You can define the basepaths for your packages here. By default
-	 * empty, but to use them you can add something like this:
-	 *      array(APPPATH.'modules'.DS)
-	 *
-	 * Paths MUST end with a directory separator (the DS constant)!
-	 */
-	'package_paths' => array(
-		PKGPATH,
+	'module_paths' => array(
+		//APPPATH.'modules'.DS
 	),
+
 
 	/**************************************************************************/
 	/* Always Load                                                            */
 	/**************************************************************************/
-	// 'always_load'  => array(
+	'always_load'  => array(
 
 		/**
-		 * These packages are loaded on Fuel's startup.
-		 * You can specify them in the following manner:
+		 * These packages are loaded on Fuel's startup.  You can specify them in
+		 * the following manner:
 		 *
 		 * array('auth'); // This will assume the packages are in PKGPATH
 		 *
@@ -272,9 +184,11 @@ return array(
 		 *     array('auth'	=> PKGPATH.'auth/')
 		 * );
 		 */
-		// 'packages'  => array(
-		// 	//'orm',
-		// ),
+		'packages'  => array(
+			'auth',
+                        'email',
+			'orm',
+		),
 
 		/**
 		 * These modules are always loaded on Fuel's startup. You can specify them
@@ -284,12 +198,12 @@ return array(
 		 *
 		 * A path must be set in module_paths for this to work.
 		 */
-		// 'modules'  => array(),
+		'modules'  => array(),
 
 		/**
 		 * Classes to autoload & initialize even when not used
 		 */
-		// 'classes'  => array(),
+		'classes'  => array(),
 
 		/**
 		 * Configs to autoload
@@ -299,7 +213,7 @@ return array(
 		 * add it like 'session' => 'auth'.
 		 * If you don't want the config in a group use null as groupname.
 		 */
-		// 'config'  => array(),
+		'config'  => array(),
 
 		/**
 		 * Language files to autoload
@@ -309,7 +223,9 @@ return array(
 		 * add it like 'validation' => 'forms'.
 		 * If you don't want the lang in a group use null as groupname.
 		 */
-		// 'language'  => array(),
-	// ),
+		'language'  => array(),
+	),
 
 );
+
+/* End of file config.php */
