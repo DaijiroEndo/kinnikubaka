@@ -1,3 +1,4 @@
+
 <div class="row">
 <div class="span6 offset3">
 <h2 style="text-align:center">新規ユーザ登録</h2>

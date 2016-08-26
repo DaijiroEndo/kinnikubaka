@@ -5,8 +5,9 @@
  <title>ユーザー登録</title>
  </head>
  <body>
+ <?=$header?>
  <form name="form1" method="post" action="">
- <table width="100%" border="1">
+ <table width="300" border="1">
  <tr>
  <th colspan="2" scope="row">ユーザー登録</th>
  </tr>
@@ -30,5 +31,7 @@
  </tr>
  </table>
  </form>
+     <?=$footer?>
+
  </body>
  </html>

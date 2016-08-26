@@ -13,7 +13,13 @@
  </tr>
 <?php endforeach;?>
 </table>
-<p><a href="sample1/logout">ログアウト</a></p>
-<p><a href="sample1/login">ログイン</a></p>
+
+<p><a href="logout">ログアウト</a></p>
+<p><a href="login">ログイン</a></p>
+<p><a href="../user/login/apply">パスワードをお忘れですか?</a></p>
+
+<!--
+ <?php echo Html::anchor('user/login/apply','パスワードをお忘れですか?');?>
+-->
 
 </div>

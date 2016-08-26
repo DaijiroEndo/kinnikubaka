@@ -6,8 +6,12 @@
 </head>
 <body>
 <form name="form1" method="post" action="">
+<h2>ログインページ</h2>
+
 <?php echo $login_error?>
- <table width="100%" border="1">
+<br>
+■ログイン
+<table width="300" border="1">
  <tr>
  <th scope="row">ユーザー名</th>
  <td><label for="username"></label>
@@ -23,5 +27,10 @@
  </tr>
  </table>
 </form>
+<br>
+■新規登録はこちら
+<p><a href="add_user">新規登録</a></p>
+
+    
 </body>
 </html>
